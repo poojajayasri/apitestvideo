@@ -19,7 +19,7 @@ def index():
 @app.route("/answer", methods=["POST", "GET"])
 def answer():
     query = request.args.get("query")
-    answer = llm(query)
+    answer = os.getcwd()
     return jsonify({"answer": answer})
 
 if __name__ == "__main__":
