@@ -5,6 +5,7 @@ import os
 
 openai_api_key = os.environ.get("OPENAI_API_KEY")
 #print(f"open api key is: {openai_api_key}")
+llm = OpenAI(model_name="text-davinci-003", openai_api_key=openai_api_key)
 
 app = Flask(__name__)
 CORS(app)
@@ -17,22 +18,9 @@ def index():
 # POST route
 @app.route("/answer", methods=["POST", "GET"])
 def answer():
-    query = request.args.get("q")
-    video_url = "https://github.com/poojajayasri/apitestvideo/blob/main/output.mp4"
-    response = requests.get(video_url)
-    
-    if response.status_code == 200:
-        with open("output.mp4", "wb") as f:
-            f.write(response.content)
-        
-        video_path = 'output.mp4'  # Path to the downloaded video file
-        
-        # Send the video file as the response
-        return send_file(video_path, mimetype='video/mp4')
-    
-    return "Video not found"
-
-
+    query = request.args.get("query")
+    answer = llm(query)
+    return jsonify({"answer": answer})
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run(port=8000)
