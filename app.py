@@ -18,7 +18,7 @@ def index():
 @app.route("/answer", methods=["POST", "GET"])
 def answer():
     query = request.args.get("q")
-    video_url = "https://github.com/your-username/your-repo/raw/main/output.mp4"
+    video_url = "https://github.com/poojajayasri/apitestvideo/blob/main/output.mp4"
     response = requests.get(video_url)
     
     if response.status_code == 200:
