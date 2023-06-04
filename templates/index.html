@@ -1,50 +1,83 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Video Query</title>
-</head>
-<body>
-    <h1>Video Query</h1>
-    <form action="/query" method="GET">
-        <label for="query">Enter your query:</label>
-        <input type="text" id="query" name="q">
-        <button type="submit">Submit</button>
+  <head>
+    <meta charset="UTF-8">
+    <title>Language Chain Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      input[type="text"] {
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      button {
+        padding: 5px 10px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      #answer {
+        margin-top: 20px;
+      }
+
+      #answer h2 {
+        margin-top: 0;
+      }
+
+      #answer p {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Language Chain Demo</h1>
+    <form>
+      <label for="query">Enter a question or query below:</label>
+      <input type="text" id="query" name="query">
+      <button type="button" onclick="getAnswer()">Get Answer</button>
     </form>
-    <br>
-    <video controls>
-        <source src="" type="video/mp4" id="video-source">
-    </video>
+    <div id="answer"></div>
 
     <script>
-        const form = document.querySelector('form');
-        const video = document.querySelector('video');
-        const videoSource = document.getElementById('video-source');
+      async function getAnswer() {
+        const query = document.getElementById("query").value;
+        const response = await fetch(`/answer?query=${encodeURIComponent(query)}`);
+        const json = await response.json();
+        const answer = json.answer;
 
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const query = document.getElementById('query').value;
-            const url = `/query?q=${encodeURIComponent(query)}`;
-
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error fetching video');
-                    }
-                    return response.blob();
-                })
-                .then(blob => {
-                    const videoURL = URL.createObjectURL(blob);
-                    videoSource.src = videoURL;
-                    video.load();
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        });
+        const answerDiv = document.getElementById("answer");
+        answerDiv.innerHTML = `
+          <h2>Answer:</h2>
+          <p>${answer}</p>
+        `;
+      }
     </script>
-</body>
+  </body>
 </html>
-
-
-
-
