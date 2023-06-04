@@ -1,0 +1,8 @@
+flask
+langchain
+openai
+requests
+jsonify
+flask_cors
+gunicorn
+urllib3==1.26.6
