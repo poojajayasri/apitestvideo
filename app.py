@@ -18,10 +18,20 @@ def index():
 @app.route("/answer", methods=["POST", "GET"])
 def answer():
     query = request.args.get("q")
-    video_path = 'output.mp4'  # Path to your video file
+    video_url = "https://github.com/your-username/your-repo/raw/main/output.mp4"
+    response = requests.get(video_url)
     
-    # Send the video file as the response
-    return send_file(video_path, mimetype='video/mp4')
+    if response.status_code == 200:
+        with open("output.mp4", "wb") as f:
+            f.write(response.content)
+        
+        video_path = 'output.mp4'  # Path to the downloaded video file
+        
+        # Send the video file as the response
+        return send_file(video_path, mimetype='video/mp4')
+    
+    return "Video not found"
+
 
 
 if __name__ == "__main__":
