@@ -18,7 +18,7 @@ def index():
 # POST route
 @app.route("/answer", methods=["POST", "GET"])
 def answer():
-    query = request.args.get("query")
+    query = request.args.get("q")
     answer = llm(query)
     return jsonify({"answer": answer})
 
